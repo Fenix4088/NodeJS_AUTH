@@ -1,50 +1,39 @@
 import { TRequest } from '../types/common';
 import { Response } from 'express';
-import { ICreatePostBody, IGetPosts } from '../types/posts';
-import PostServices from '../services/post.services';
-
+import Role from '../models/role.model';
+import User from '../models/user.model';
 interface IAuthController {
-  registaration(req: TRequest<{}, {}>, res: Response): Promise<void>;
-  // create(req: TRequest<Omit<ICreatePostBody, '_id'>, {}>, res: Response): Promise<void>;
-  // getPosts(req: TRequest<{}, IGetPosts>, res: Response): Promise<void>;
-  // update(req: TRequest<ICreatePostBody, {}>, res: Response): Promise<void>;
-  // delete(req: TRequest<{}, IGetPosts>, res: Response): Promise<void>;
+  users(req: TRequest<{}, {}>, res: Response): Promise<Response<any, Record<string, any>>>;
 }
 
 class AuthController implements IAuthController {
   public registaration = async (req: TRequest<{}, {}>, res: Response) => {
     try {
-      
     } catch (error) {
       console.log(error);
-      res.status(500).json(error)
+      return res.sendStatus(500).json(error);
     }
-  }
+  };
 
   public login = async (req: TRequest<{}, {}>, res: Response) => {
     try {
-      
     } catch (error) {
       console.log(error);
-      res.status(500).json(error)
+      return res.sendStatus(500).json(error);
     }
-  }
+  };
 
   public users = async (req: TRequest<{}, {}>, res: Response) => {
-    try {
-      
+    try {       
+      return res.status(200).json('users');
     } catch (error) {
       console.log(error);
-    res.status(500).json(error)
+      return res.status(500).json(error);
     }
-  }
-
-
-
+  };
 
   // public create = async (req: TRequest<Omit<ICreatePostBody, '_id'>, {}, true>, res: Response) => {
   //   try {
-
 
   //     const { author, title, content } = req.body;
 
