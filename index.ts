@@ -1,20 +1,20 @@
 import dotenv from 'dotenv';
 import express from 'express';
-import router from './src/routers/post.router';
+import authRouter from './src/routers/auth.router';
 import mongoose from 'mongoose';
 import fileupload from 'express-fileupload';
 
 dotenv.config();
 
 const PORT: number = (process.env.PORT && +process.env.PORT) || 5000;
-const DB: string = `mongodb+srv://fenix:${process.env.PASS}@cluster0.1kxrh.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
+const DB: string = `mongodb+srv://fenix:${process.env.PASS}@cluster0.xfxfh.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
 const app = express();
 app.use(express.static('static'));
 app.use(express.json());
 app.use(fileupload({}))
 
-app.use('/api', router);
+app.use('/api', authRouter);
 
 const startApp = async () => {
   try {
