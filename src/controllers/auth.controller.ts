@@ -35,7 +35,7 @@ class AuthController implements IAuthController {
 
       const hashedPassword = bcryptjs.hashSync(password, bcryptjs.genSaltSync(10));
 
-      const userRole = await Role.findOne({ role: 'USER' });
+      const userRole = await Role.findOne({ value: 'ADMIN' });
 
       const user = new User({ username, password: hashedPassword, roles: [userRole?.value] });
 
