@@ -1,18 +1,25 @@
-import { TRequest } from '../types/common';
-import { Response } from 'express';
+import { RerquestExpressValidator, TRequest } from '../types/common';
+import { Response, Request } from 'express';
 import bcryptjs from 'bcryptjs';
 import User from '../models/user.model';
 import Role from '../models/role.model';
-
 import { IUser } from 'src/types/auth';
+import { validationResult } from 'express-validator';
+
 interface IAuthController {
   users(req: TRequest<{}, {}>, res: Response): Promise<Response<any, Record<string, any>>>;
-  registaration(req: TRequest<IUser, {}>, res: Response): Promise<Response<any, Record<string, any>>>;
+  registaration(req: RerquestExpressValidator<IUser>, res: Response): Promise<Response<any, Record<string, any>>>;
 }
 
 class AuthController implements IAuthController {
-  public registaration = async (req: TRequest<IUser, {}>, res: Response) => {
+  public registaration = async (req: RerquestExpressValidator<IUser>, res: Response) => {
     try {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ message: 'Registartion errors', errors });
+      }
+
       const { username, password } = req.body;
 
       const candidate = await User.findOne({ username });
