@@ -3,7 +3,7 @@ import { Response, Request } from 'express';
 import bcryptjs from 'bcryptjs';
 import User from '../models/user.model';
 import Role from '../models/role.model';
-import { IUser } from 'src/types/auth';
+import { IUser, RequestWithJWTPayload, RequestWithUserDataFromToken } from 'src/types/auth';
 import { validationResult } from 'express-validator';
 import { Types } from 'mongoose';
 import jwt, { Secret } from 'jsonwebtoken';
@@ -12,7 +12,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 interface IAuthController {
-  users(req: TRequest<{}, {}>, res: Response): Promise<Response<any, Record<string, any>>>;
+  users(req: RequestWithUserDataFromToken, res: Response): Promise<Response<any, Record<string, any>>>;
   registaration(req: RerquestExpressValidator<IUser>, res: Response): Promise<Response<any, Record<string, any>>>;
 }
 
@@ -66,10 +66,10 @@ class AuthController implements IAuthController {
     } catch (error) {
       console.log(error);
       return res.status(400).json({ message: 'Login error' });
+    };
     }
-  };
 
-  public users = async (req: TRequest<{}, {}>, res: Response) => {
+  public users = async (req: RequestWithJWTPayload, res: Response) => {
     try {
       const users = await User.find();
       return res.status(200).json(users);
