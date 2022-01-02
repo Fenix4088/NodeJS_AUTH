@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { check } from 'express-validator';
-import { authMiddleware } from '../middleware/middleware';
+import { authMiddleware, roleMiddleware } from '../middleware/middleware';
 import AuthController from '../controllers/auth.controller';
 
 const router = Router();
@@ -22,6 +22,9 @@ router.post(
 
 router.post(`${Auth_Endpoints.LOGIN}`, (req, res) => AuthController.login(req, res));
 
-router.get(`${Auth_Endpoints.USERS}`, authMiddleware, (req, res) => AuthController.users(req, res));
+// router.get(`${Auth_Endpoints.USERS}`, authMiddleware, (req, res) => AuthController.users(req, res));
+
+
+router.get(`${Auth_Endpoints.USERS}`, roleMiddleware(['USER']), (req, res) => AuthController.users(req, res));
 
 export default router;

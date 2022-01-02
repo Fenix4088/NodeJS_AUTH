@@ -12,7 +12,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 interface IAuthController {
-  users(req: RequestWithJWTPayload, res: Response): Promise<Response<any, Record<string, any>>>;
+  users(req: TRequest<{}, {}>, res: Response): Promise<Response<any, Record<string, any>>>;
   registaration(req: RerquestExpressValidator<IUser>, res: Response): Promise<Response<any, Record<string, any>>>;
 }
 
@@ -69,10 +69,8 @@ class AuthController implements IAuthController {
     };
     }
 
-  public users = async (req: RequestWithJWTPayload, res: Response) => {
+  public users = async (req: TRequest<{}, {}>, res: Response) => {
     try {
-
-      console.log(req.user);
       
       const users = await User.find();
       return res.status(200).json(users);
